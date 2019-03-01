@@ -11,134 +11,151 @@ public class GenerateTestCases {
 	static int[] endOfIntParameters;
 	static int[] type;
 	
-	public static void testCasesForIntegerParameter(int value, int i, String fileName) 
-	{
-		String writeTestCaseToFile = ""; 
-		boolean flag = false; //true = string parameters present
-		for(int j = 0; j < numOfParameters; j++)
-		{
-			if(j == i)
-			{
-				writeTestCaseToFile += Integer.toString( value ) + ",";	
-				continue;
-			}
-			
-			if(type[j] == 1)	//int parameter
-			{
-				writeTestCaseToFile += Integer.toString( endOfIntParameters[j]/2 ) + ",";	//nominal value
-				
-			}
-			else	//string parameter
-			{
-				flag = true;
-				
-				String[] splitString = stringParameters[j].split(",");
-				
-				for(int k = 0; k < splitString.length; k++)
-				{
-					
-					String temp = writeTestCaseToFile + splitString[k] + ",";
-					try 
-					{ 
-						// Open given file in append mode. 
-						BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true)); 
-						out.write(temp.substring(0, temp.length() - 1)); //substring to remove last comma
-						out.newLine();
-						out.close(); 
-					} 
-					catch (IOException e) 
-					{ 
-						System.out.println("exception occoured" + e); 
-					} 
-					
-				}
-			}
-		}
-		
-		//works only when no string parameter present
-		if(flag == false) 
-		{
-			try 
-			{ 
-				// Open given file in append mode. 
-				BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true)); 
-				out.write(writeTestCaseToFile.substring(0, writeTestCaseToFile.length() - 1)); //substring to remove last comma
-				out.newLine();
-				out.close(); 
-			} 
-			catch (IOException e) 
-			{ 
-				System.out.println("exception occoured" + e); 
-			} 
-		}
-		
-		
-	}
-	
-	public static void testCasesForStringParameter(String string, int i, String fileName) 
-	{
-		String writeTestCaseToFile = ""; 
-		boolean flag = false; //true = string parameters present
-		for(int j = 0; j < numOfParameters; j++)
-		{
-			if(j == i)
-			{
-				writeTestCaseToFile += string + ",";	
-				continue;
-			}
-			
-			if(type[j] == 1)	//int parameter
-			{
-				writeTestCaseToFile += Integer.toString( endOfIntParameters[j]/2 ) + ",";	//nominal value
-				
-			}
-			else	//string parameter
-			{
-				flag = true;
-				
-				String[] splitString = stringParameters[j].split(",");
-				
-				for(int k = 0; k < splitString.length; k++)
-				{
-					
-					String temp = writeTestCaseToFile + splitString[k] + ",";
-					try 
-					{ 
-						// Open given file in append mode. 
-						BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true)); 
-						out.write(temp.substring(0, temp.length() - 1)); //substring to remove last comma
-						out.newLine();
-						out.close(); 
-					} 
-					catch (IOException e) 
-					{ 
-						System.out.println("exception occoured" + e); 
-					} 
-					
-				}
-			}
-		}
-		
-		//works only when no string parameter present
-		if(flag == false) 
-		{
-			try 
-			{ 
-				// Open given file in append mode. 
-				BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true)); 
-				out.write(writeTestCaseToFile.substring(0, writeTestCaseToFile.length() - 1)); //substring to remove last comma
-				out.newLine();
-				out.close(); 
-			} 
-			catch (IOException e) 
-			{ 
-				System.out.println("exception occoured" + e); 
-			} 
-		}
-		
-		
-	}
-	
+	public static void writeDatabaseAndFile(String writeTestCaseToDB)
+    {
+        System.out.println(writeTestCaseToDB.substring(0,writeTestCaseToDB.length()-1));
+        
+        try
+        {
+            BufferedWriter append = new BufferedWriter(new FileWriter("Testing.csv", true));
+            append.write(writeTestCaseToDB.substring(0,writeTestCaseToDB.length()-1));
+            append.newLine();
+            append.close();
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+        
+    }
+
+    public static void testCasesForIntegerParameter(int value, int i, int k, int l, int parametersParsed, String writeTestCaseToDB)
+    {
+        if(parametersParsed == numOfParameters)
+        {
+            //write test case to db as well as in a file
+            writeDatabaseAndFile(writeTestCaseToDB);
+            return;
+        }
+
+        for(int j = parametersParsed; j < numOfParameters; j++)
+        {
+            if(j == i)
+            {
+                writeTestCaseToDB += Integer.toString( value ) + ",";
+                parametersParsed++;
+                if(parametersParsed == numOfParameters)
+                {
+                    //write test case to db as well as in a file
+                    writeDatabaseAndFile(writeTestCaseToDB);
+                    return;
+                }
+                continue;
+            }
+
+            if(type[j] == 1)	//int parameter
+            {
+            	if( l <= endOfIntParameters[j]/2)
+            	{
+            		l++;
+            		testCasesForIntegerParameter(value, i, k, l, parametersParsed, writeTestCaseToDB);
+            		writeTestCaseToDB += Integer.toString(l-1) + ",";
+            		parametersParsed++;
+                    if(parametersParsed == numOfParameters)
+                    {
+                        //write test case to db as well as in a file
+                        writeDatabaseAndFile(writeTestCaseToDB);
+                        return;
+                    }
+            	}
+            }
+            else	//string parameter
+            {
+                String[] splitString = stringParameters[j].split(",");
+
+                if( k < splitString.length)
+                {
+                    k++;
+                    testCasesForIntegerParameter(value,i,k,l,parametersParsed,writeTestCaseToDB);
+                    writeTestCaseToDB += splitString[k-1] + ",";
+                    parametersParsed++;
+                    if(parametersParsed == numOfParameters)
+                    {
+                        //write test case to db as well as in a file
+                        writeDatabaseAndFile(writeTestCaseToDB);
+                        return;
+                    }
+                }
+
+            }
+        }
+
+
+
+    }
+
+    public static void testCasesForStringParameter(String value, int i, int k, int parametersParsed, String writeTestCaseToDB)
+    {
+        if(parametersParsed == numOfParameters)
+        {
+            //write test case to db as well as in a file
+            writeDatabaseAndFile(writeTestCaseToDB);
+            return;
+        }
+
+        for(int j = parametersParsed; j < numOfParameters; j++)
+        {
+            if(j == i)
+            {
+                writeTestCaseToDB += value + ",";
+                parametersParsed++;
+                if(parametersParsed == numOfParameters)
+                {
+                    //write test case to db as well as in a file
+                    writeDatabaseAndFile(writeTestCaseToDB);
+                    return;
+                }
+                continue;
+            }
+
+            if(type[j] == 1)	//int parameter
+            {
+            	writeTestCaseToDB += Integer.toString( endOfIntParameters[j]/2 ) + ",";	//nominal value
+                parametersParsed++;
+                if(parametersParsed == numOfParameters)
+                {
+                    //write test case to db as well as in a file
+                    writeDatabaseAndFile(writeTestCaseToDB);
+                    return;
+                }
+
+            }
+            else	//string parameter
+            {
+                String[] splitString = stringParameters[j].split(",");
+
+                //can go out of bound for splitString length
+                if( k < splitString.length)
+                {
+                    k++;
+                    testCasesForStringParameter(value,i,k,parametersParsed,writeTestCaseToDB);
+                    writeTestCaseToDB += splitString[k-1] + ",";
+                    parametersParsed++;
+                    if(parametersParsed == numOfParameters)
+                    {
+                        //write test case to db as well as in a file
+                        writeDatabaseAndFile(writeTestCaseToDB);
+                        return;
+                    }
+                }
+
+            }
+        }
+
+
+
+    }
+    
 	public static void main(String[] args) 
 	{
 		
@@ -186,7 +203,7 @@ public class GenerateTestCases {
 		}
 		
 		//file name of txt file
-		String fileName = "Test_Cases.csv";
+		String fileName = "Testing.csv";
 		try 
 		{
 			BufferedWriter testCases = new BufferedWriter(new FileWriter(fileName));
@@ -199,32 +216,28 @@ public class GenerateTestCases {
 			e.printStackTrace();
 		}
 		
-		for(int i = 0; i < numOfParameters; i++)
-		{
-			//int parameters
-			if(type[i] == 1)
-			{
-				testCasesForIntegerParameter(startOfIntParameters[i]-1, i, fileName);	//invalid #1
-				testCasesForIntegerParameter(startOfIntParameters[i], i, fileName);
-				testCasesForIntegerParameter(startOfIntParameters[i]+1, i, fileName);
-				testCasesForIntegerParameter(endOfIntParameters[i]-1, i, fileName);
-				testCasesForIntegerParameter(endOfIntParameters[i], i, fileName);
-				testCasesForIntegerParameter(endOfIntParameters[i]+1, i, fileName);		//invalid #2
-			}
-			else
-			{
-				String[] splitString = stringParameters[i].split(",");
-				testCasesForStringParameter("invalid1", i, fileName);					//invalid #1
-				for(int j = 0; j < splitString.length; j++)
-				{
-					testCasesForStringParameter(splitString[j], i, fileName);
-				}
-				testCasesForStringParameter("invalid2", i, fileName);					//invalid #2
+		for(int i = 0; i < numOfParameters; i++) 
+        {
+            //int parameters
+            if (type[i] == 1) 
+            {
+                for(int j = startOfIntParameters[i]-1; j <= endOfIntParameters[i]+1; j++)
+                {
+                    testCasesForIntegerParameter(j,i,0,startOfIntParameters[i],0,"");
+                }
 
-				
-			}
-			
-		}
+            }
+            else
+            {
+                String[] splitString = stringParameters[i].split(",");
+                testCasesForStringParameter("invalid1",i,0,0,"");					//invalid #1
+                for(int j = 0; j < splitString.length; j++)
+                {
+                    testCasesForStringParameter(splitString[j], i,0,0,"");
+                }
+                testCasesForStringParameter("invalid2", i,0,0,"");					//invalid #2
+            }
+        }
 		
 	}
 
