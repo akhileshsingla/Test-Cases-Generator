@@ -221,7 +221,7 @@ public class GenerateTestCases {
             //int parameters
             if (type[i] == 1) 
             {
-                for(int j = startOfIntParameters[i]-1; j <= endOfIntParameters[i]+1; j++)
+                for(int j = startOfIntParameters[i]; j <= endOfIntParameters[i]; j++)
                 {
                     testCasesForIntegerParameter(j,i,0,startOfIntParameters[i],0,"");
                 }
@@ -230,12 +230,12 @@ public class GenerateTestCases {
             else
             {
                 String[] splitString = stringParameters[i].split(",");
-                testCasesForStringParameter("invalid1",i,0,0,"");					//invalid #1
+                //testCasesForStringParameter("invalid1",i,0,0,"");					//invalid #1
                 for(int j = 0; j < splitString.length; j++)
                 {
                     testCasesForStringParameter(splitString[j], i,0,0,"");
                 }
-                testCasesForStringParameter("invalid2", i,0,0,"");					//invalid #2
+                //testCasesForStringParameter("invalid2", i,0,0,"");					//invalid #2
             }
         }
 		
