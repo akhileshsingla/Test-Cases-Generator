@@ -25,26 +25,32 @@ public class PushBookingTestCases extends AppCompatActivity {
     public static void writeDatabaseAndFile(String writeTestCaseToDB)
     {
         String[] sp = writeTestCaseToDB.split(",");
+        
+        if(sp[0].equals("Pilani") || sp[1].equals("Pilani"))	//checking if either src of dest is Pilani
+		{
+			if(sp[0].equals(sp[1]) == false)	//checking if src and dest aren't same
+			{
+                //DB
+                Booking testCase = new Booking(sp[0],sp[1], new Timestamp(new Date(2019-1900,2,
+                                            Integer.parseInt(sp[2]),Integer.parseInt(sp[3]),0,0)),"pending",sp[4]);
 
-        //DB
-        Booking testCase = new Booking(sp[0],sp[1], new Timestamp(new Date(2019-1900,2,
-                                    Integer.parseInt(sp[2]),Integer.parseInt(sp[3]),0,0)),"pending",sp[4]);
+                dB.getFirestoreInstance().collection("bookings").document(testCase.getId()).set(testCase);
 
-        dB.getFirestoreInstance().collection("bookings").document(testCase.getId()).set(testCase);
+                //File
+                String timestamp = sp[2] + "-3-2019 " + sp[3] + ":00:00";
+                writeTestCaseToDB = sp[0] + "," + sp[1] + "," + timestamp + "," + "pending" + "," + sp[4];
+                System.out.println(writeTestCaseToDB);
 
-        //File
-        String timestamp = sp[2] + "-3-2019 " + sp[3] + ":00:00";
-        writeTestCaseToDB = sp[0] + "," + sp[1] + "," + timestamp + "," + "pending" + "," + sp[4];
-        System.out.println(writeTestCaseToDB);
-
-        try
-        {
-            BufferedWriter append = new BufferedWriter(new FileWriter("Test Cases.csv", true));
-            append.write(writeTestCaseToDB);
-            append.newLine();
-            append.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+                try
+                {
+                    BufferedWriter append = new BufferedWriter(new FileWriter("Test Cases.csv", true));
+                    append.write(writeTestCaseToDB);
+                    append.newLine();
+                    append.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -105,12 +111,8 @@ public class PushBookingTestCases extends AppCompatActivity {
                         return;
                     }
                 }
-
             }
         }
-
-
-
     }
 
     public static void testCasesForStringParameter(String value, int i, int k, int parametersParsed, String writeTestCaseToDB)
@@ -147,12 +149,10 @@ public class PushBookingTestCases extends AppCompatActivity {
                     writeDatabaseAndFile(writeTestCaseToDB);
                     return;
                 }
-
             }
             else	//string parameter
             {
                 String[] splitString = stringParameters[j].split(",");
-
                 //can go out of bound for splitString length
                 if( k < splitString.length)
                 {
@@ -167,12 +167,8 @@ public class PushBookingTestCases extends AppCompatActivity {
                         return;
                     }
                 }
-
             }
         }
-
-
-
     }
 
     @Override
@@ -203,15 +199,13 @@ public class PushBookingTestCases extends AppCompatActivity {
                 }
 
             }
-            else
+            else    //string parameter
             {
                 String[] splitString = stringParameters[i].split(",");
-                //testCasesForStringParameter("invalid1",i,0,0,"");					//invalid #1
                 for(int j = 0; j < splitString.length; j++)
                 {
                     testCasesForStringParameter(splitString[j], i,0,0,"");
                 }
-                //testCasesForStringParameter("invalid2", i,0,0,"");					//invalid #2
             }
         }
     }
