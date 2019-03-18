@@ -34,7 +34,7 @@ public class PushBookingTestCases extends AppCompatActivity {
                 Booking testCase = new Booking(sp[0],sp[1], new Timestamp(new Date(2019-1900,2,
                                             Integer.parseInt(sp[2]),Integer.parseInt(sp[3]),0,0)),"pending",sp[4]);
 
-                dB.getFirestoreInstance().collection("bookings").document(testCase.getId()).set(testCase);
+                dB.getFirestoreInstance().collection("bookingAkhilesh").document(testCase.getId()).set(testCase);
 
                 //File
                 String timestamp = sp[2] + "-3-2019 " + sp[3] + ":00:00";
