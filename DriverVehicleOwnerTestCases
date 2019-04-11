@@ -1,0 +1,288 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class DriverVehicleOwnerTestCases {
+
+	public static void main(String[] args) {
+	
+		String city[] = {"Delhi","Pilani","Jaipur","Noida","Ghaziabad","Sikar","Chandigarh"};
+		String location[] = {"28.644800,77.216721", "28.380200,75.609200", "26.912400,75.787300", "28.535500,77.391000", "28.669200,77.453800","27.609400,75.139900", "30.733300,76.779400"};
+		String vehicleCode[] = {"DL05", "RJ18", "RJ14", "UP16", "UP14", "RJ23", "CH01"};
+		
+		//Driver test cases
+		try
+		{
+			BufferedWriter testCases = new BufferedWriter(new FileWriter("Driver Test Cases.csv"));
+			testCases.write("name,phone,email,license,longitude,latitude");
+			testCases.newLine();
+			testCases.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		for(int i=0; i<7; i++)
+		{
+			driverTestCases(location[i], vehicleCode[i]);
+		}
+		
+		//Vehicle test cases
+		//TODO: write to file
+		try
+		{
+			BufferedWriter testCases = new BufferedWriter(new FileWriter("Vehicle Test Cases.csv"));
+			testCases.write("model,type,number,location_longitude,location_latitude,city,lastLocation_longitude,lastLocation_latitude,numOfSeats");
+			testCases.newLine();
+			testCases.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		//List<Integer> listOfVehicles 
+		for(int i=0; i<7; i++)
+		{
+			vehicleTestCases(vehicleCode[i], city[i], location[i]);
+		}
+		
+		//owner test cases
+		try
+		{
+			BufferedWriter testCases = new BufferedWriter(new FileWriter("Owner Test Cases.csv"));
+			testCases.write("name,phone,email,city");
+			testCases.newLine();
+			testCases.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		for(int i=0; i<7; i++)
+		{
+			ownerTestCases(city[i]);
+		}
+	}
+
+	static int ownerNameCount = 1;
+	static int ownerPhoneCount = 1;
+	
+	private static void ownerTestCases(String city) {
+		for(int i=1; i<=10; i++)
+		{
+			String ownerName = "owner" + Integer.toString(ownerNameCount++);
+			
+			String ownerPhone;
+			if(ownerPhoneCount < 10)
+			{
+				ownerPhone = "999995000" + Integer.toString(ownerPhoneCount);
+			}
+			else 
+			{
+				ownerPhone = "99999500" + Integer.toString(ownerPhoneCount);
+			} 
+			
+			String ownerEmail = ownerName + "@gmail.com";
+			String ownerCity = city;
+			
+			String writeToCSV = ownerName + "," + ownerPhone + "," + ownerEmail + "," + ownerCity;
+			
+			try
+			{
+				BufferedWriter append = new BufferedWriter(new FileWriter("Owner Test Cases.csv", true));
+				append.write(writeToCSV);
+				append.newLine();
+				append.close();
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	//name,cartype,numofseats
+	static String carCategory1[] = {"Hyundai Eon","micro","4"}; 
+	static String carCategory2[] = {"Swift DZire", "sedan", "4"};
+	static String carCategory3[] = {"Toyota Innova", "SUV", "7"};
+	static int vehicleNumCount = 1;
+	
+	private static void vehicleTestCases(String vehicleCode, String city, String location) {
+		for(int i=1; i<=7; i++)
+		{
+			for(int j=1; j<=3; j++)
+			{
+				String vehicleModel = carCategory1[0];
+				String carType = carCategory1[1];
+				
+				String vehicleNum;
+				if (vehicleNumCount < 10) 
+				{
+					vehicleNum = vehicleCode + "PB000" + Integer.toString(vehicleNumCount++);
+				}
+				else 
+				{
+					vehicleNum = vehicleCode + "PB00" + Integer.toString(vehicleNumCount++);
+				}
+				
+				String vehicleLocation = location;
+				String vehicleCity = city;
+				String vehicleLastLocation = location;
+				String numOfSeats = carCategory1[2];
+				
+				String writeToCSV = vehicleModel + "," + carType + "," + vehicleNum + "," + vehicleLocation +  "," + vehicleCity + "," + vehicleLastLocation + "," + numOfSeats;
+				//System.out.println(writeToCSV);
+				
+				try
+				{
+					BufferedWriter append = new BufferedWriter(new FileWriter("Vehicle Test Cases.csv", true));
+					append.write(writeToCSV);
+					append.newLine();
+					append.close();
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			for(int j=4; j<=6; j++)
+			{
+				String vehicleModel = carCategory2[0];
+				String carType = carCategory2[1];
+				
+				String vehicleNum;
+				if (vehicleNumCount < 10) 
+				{
+					vehicleNum = vehicleCode + "PB000" + Integer.toString(vehicleNumCount++);
+				}
+				else 
+				{
+					vehicleNum = vehicleCode + "PB00" + Integer.toString(vehicleNumCount++);
+				}
+				
+				String vehicleLocation = location;
+				String vehicleCity = city;
+				String vehicleLastLocation = location;
+				String numOfSeats = carCategory2[2];
+				
+				String writeToCSV = vehicleModel + "," + carType + "," + vehicleNum + "," + vehicleLocation +  "," + vehicleCity + "," + vehicleLastLocation + "," + numOfSeats;
+				//System.out.println(writeToCSV);
+				
+				try
+				{
+					BufferedWriter append = new BufferedWriter(new FileWriter("Vehicle Test Cases.csv", true));
+					append.write(writeToCSV);
+					append.newLine();
+					append.close();
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		
+			for(int j=7; j<=10; j++)
+			{
+				String vehicleModel = carCategory3[0];
+				String carType = carCategory3[1];
+				
+				String vehicleNum;
+				if (vehicleNumCount < 10) 
+				{
+					vehicleNum = vehicleCode + "PB000" + Integer.toString(vehicleNumCount++);
+				}
+				else 
+				{
+					vehicleNum = vehicleCode + "PB00" + Integer.toString(vehicleNumCount++);
+				}
+				
+				String vehicleLocation = location;
+				String vehicleCity = city;
+				String vehicleLastLocation = location;
+				String numOfSeats = carCategory3[2];
+				
+				String writeToCSV = vehicleModel + "," + carType + "," + vehicleNum + "," + vehicleLocation +  "," + vehicleCity + "," + vehicleLastLocation + "," + numOfSeats;
+				//System.out.println(writeToCSV);
+				
+				try
+				{
+					BufferedWriter append = new BufferedWriter(new FileWriter("Vehicle Test Cases.csv", true));
+					append.write(writeToCSV);
+					append.newLine();
+					append.close();
+				} 
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+
+	static int driverCount = 1;
+	static int phoneNumCount = 1;
+	static int licenseCount = 1;
+	
+	private static void driverTestCases(String location	, String vehicleCode) {
+		// TODO Auto-generated method stub
+		//name,phone,email,license,location
+
+		//creating 70 drivers for each city
+		for(int i=1; i<=70; i++)
+		{
+			String driverName = "driver" + Integer.toString(driverCount++);
+			
+			String driverPhone;
+			if(phoneNumCount < 10)
+			{
+				driverPhone = "900005000" + Integer.toString(phoneNumCount++);
+			}
+			else if (phoneNumCount > 9 && phoneNumCount < 100) 
+			{
+				driverPhone = "90000500" + Integer.toString(phoneNumCount++);
+			}
+			else 
+			{
+				driverPhone = "9000050" + Integer.toString(phoneNumCount++);
+			}
+		
+			String driverEmail = driverName + "@gmail.com";
+			
+			
+			String driverLicense; 
+			if(licenseCount < 10)
+			{
+				driverLicense = vehicleCode + "2014000000" + Integer.toString(licenseCount++); 
+			}
+			else if (licenseCount > 9 && licenseCount < 100) 
+			{
+				driverLicense = vehicleCode + "201400000" + Integer.toString(licenseCount++); 
+			}
+			else 
+			{
+				driverLicense = vehicleCode + "20140000" + Integer.toString(licenseCount++); 
+			}
+			
+			String driverLocation = location;
+			
+			String writeToCSV = driverName + "," + driverPhone + "," + driverEmail + "," + driverLicense +  "," + driverLocation;
+			//System.out.println(writeToCSV);
+			
+			try
+			{
+				BufferedWriter append = new BufferedWriter(new FileWriter("Driver Test Cases.csv", true));
+				append.write(writeToCSV);
+				append.newLine();
+				append.close();
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+
+	
+	
+}
